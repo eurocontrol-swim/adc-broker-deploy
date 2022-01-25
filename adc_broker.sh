@@ -33,6 +33,12 @@ function error
 function install
 {
     yum -y install docker || error "Failed to install docker"
+
+    local error_message="Failed to configure docker access"
+
+    sudo groupadd docker || error ${error_message}
+    sudo usermod -aG docker $USER || error ${error_message}
+    newgrp docker || error ${error_message}
 }
 
 function prepare_repos
@@ -187,7 +193,7 @@ case ${ACTION} in
     fi
 
     # update the repos if they exits othewise clone them
-    #prepare_repos
+    prepare_repos
 
     create_certificates
 
