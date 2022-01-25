@@ -9,14 +9,14 @@ Run `./adc_broker.sh start` (a `--detached` option is available)
 Wait for the angular build to be finished
 The application is now operational
 
-# Website
+### Website
 The website is accessible at the address http://localhost (for the moment it is not accessible outside the VM)
 An administrator admin@mail.com is created by default with the default password admin (it need to be changed)
 
-# Publisher interface
+#### Publisher interface
 The REST message publishing interface is available at the address http://localhost/api/publish
 
-# Subscriber interface
+#### Subscriber interface
 The AMQP message receiving interface is available at the address amqps://<username>:<password>@localhost:5771/<queue path>
 The username in this address correspond to the first part of a subscriber mail (before the @). Only subscribers users have access to the broker.
 
