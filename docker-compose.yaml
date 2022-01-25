@@ -1,0 +1,75 @@
+version: "3"
+
+services:
+  frontend:
+    image: angular_build
+    build:
+      context: git/adc-broker-frontend/
+      dockerfile: Dockerfile
+    container_name: angular_build
+    environment:
+      - STATIC_FILES_DIRS=/static/
+    volumes:
+      - static_files:/static/
+    
+  db:
+    image: postgres:14.1-alpine
+    container_name: db
+    volumes:
+      - /data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+
+  broker:
+    image: artemis_broker
+    container_name: broker
+    build:
+      context: git/adc-broker-backend/artemis_broker/
+      dockerfile: Dockerfile
+    ports:
+      - "5771:5771"
+      - "8161:8161"
+    volumes:
+      - ./git/adc-broker-backend/certificates/certs/:/certs
+    environment:
+      - AMQ_USER=admin
+      - AMQ_PASSWORD=admin
+
+  web:
+    image: adc_back
+    build:
+      context: git/adc-broker-backend/
+      dockerfile: Dockerfile
+    container_name: adc_back
+    command: gunicorn adc_backend.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - static_files:/static
+      - ./git/adc-broker-backend/certificates/certs/:/certs
+    expose:
+      - 8000
+    environment:
+      - AMQP_BROKER_HOST=broker
+      - AMQP_BROKER_ADMIN=admin
+      - AMQP_BROKER_ADMIN_PASSWORD=admin
+      - DATABASE_HOST=db
+      - AMQPS_CERTIFICATES_DIR=/certs/
+      - STATIC_FILES_DIRS=/static/
+    depends_on:
+      - frontend
+      - db
+      - broker
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:80
+    volumes:
+      - static_files:/home/app/web/staticfiles
+    depends_on:
+      - web
+
+volumes:
+  static_files:
+    driver: local
