@@ -17,7 +17,7 @@ An administrator admin@mail.com is created by default with the default password 
 The REST message publishing interface is available at the address http://localhost/api/publish
 
 #### Subscriber interface
-The AMQP message receiving interface is available at the address amqps://<username>:<password>@localhost:5771/<queue path>
+The AMQP message receiving interface is available at the address amqps://username:password@localhost:5771/queue_path
 The username in this address correspond to the first part of a subscriber mail (before the @). Only subscribers users have access to the broker.
 
 ## Send a message
