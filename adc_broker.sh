@@ -8,9 +8,9 @@ BACKEND_DIR=${GIT_DIR}/adc-broker-backend
 FRONTEND_DIR=${GIT_DIR}/adc-broker-frontend
 
 BACKEND_GIT_URL="https://github.com/eurocontrol-swim/adc-broker-backend.git"
-BACKEND_GIT_BRANCH="docker"
+BACKEND_GIT_BRANCH="develop"
 FRONTEND_GIT_URL="https://github.com/eurocontrol-swim/adc-broker-frontend.git"
-FRONTEND_GIT_BRANCH="docker"
+FRONTEND_GIT_BRANCH="develop"
 
 CERTS_DIR=${BACKEND_DIR}/certificates/certs
 
