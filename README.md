@@ -32,7 +32,7 @@ The policy_id can be obtained in the publisher page.
 ## Receive a message
 To receive AMQP messages, a test client is available.
 Run `export PYTHONPATH=$(pwd)/git/adc-broker-backend/`.
-Run `cd git/adc-broker-backend/backend/amqp/test_client`.
+Run `cd git/adc-broker-backend/backend/amqp/test_clients`.
 Run `python3 ReceiveAmqps.py -u amqps://<username>:<password>@localhost:5771/ -a <queue path>`.
 The username in this address correspond to the first part of a subscriber mail (before the @).
 
