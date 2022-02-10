@@ -161,7 +161,7 @@ function create_nginx_https_certificate
         openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${ROOT_DIR}/nginx/ssl/nginx-selfsigned.key -out ${ROOT_DIR}/nginx/ssl/nginx-selfsigned.crt || error "Failed to create certificates"
     fi
 
-    if [[ -f ${ROOT_DIR}/nginx/ssl/ssl-params.conf ]]
+    if [[ -f ${ROOT_DIR}/nginx/ssl/dhparam.pem ]]
     then
         echo "Strong Diffie-Hellman group is already present"
     else
