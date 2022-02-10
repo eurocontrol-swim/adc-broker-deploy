@@ -62,11 +62,16 @@ services:
       - broker
 
   nginx:
-    build: ./nginx
+    image: nginx:stable-alpine
+    container_name: nginx
     ports:
-      - 80:80
+      - '80:80'
+      - '443:443'
+    restart: unless-stopped
     volumes:
       - static_files:/home/app/web/staticfiles
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/ssl:/etc/nginx/ssl
     depends_on:
       - web
 
