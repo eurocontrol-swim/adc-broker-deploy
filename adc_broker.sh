@@ -152,13 +152,16 @@ function create_nginx_https_certificate
     echo "============================================="
     echo
 
-    if [[ -f ${ROOT_DIR}/nginx/ssl/nginx-selfsigned.crt ]]
+    if [[ -f ${ROOT_DIR}/nginx/ssl/adc-broker-nginx-certificate.pem ]]
     then
         echo "Certificate is already present"
     else
         echo "Creating a certificate for HTTPS support (valid for 365 days)"
         mkdir -p ${ROOT_DIR}/nginx/ssl || error "Failed to create https certificates directory"
-        openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${ROOT_DIR}/nginx/ssl/nginx-selfsigned.key -out ${ROOT_DIR}/nginx/ssl/nginx-selfsigned.crt || error "Failed to create certificates"
+        openssl ecparam -genkey -name secp384r1 -out ${ROOT_DIR}/nginx/ssl/adc-broker-nginx-key.pem
+        openssl req -new -sha256 -key ${ROOT_DIR}/nginx/ssl/adc-broker-nginx-key.pem -out ${ROOT_DIR}/nginx/ssl/adc-broker-nginx.csr -subj /CN=localhost.localdomain
+        openssl req -x509 -sha256 -days 365 -key ${ROOT_DIR}/nginx/ssl/adc-broker-nginx-key.pem -in ${ROOT_DIR}/nginx/ssl/adc-broker-nginx.csr -out ${ROOT_DIR}/nginx/ssl/adc-broker-nginx-certificate.pem
+        openssl req -in ${ROOT_DIR}/nginx/ssl/adc-broker-nginx.csr -text -noout | grep -i "Signature.*SHA256" && echo "All is well"
     fi
 
     if [[ -f ${ROOT_DIR}/nginx/ssl/dhparam.pem ]]
