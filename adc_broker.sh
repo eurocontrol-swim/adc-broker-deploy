@@ -146,6 +146,33 @@ function build
     echo
 }
 
+function create_nginx_https_certificate
+{
+    echo "Creating self-signed certificate for NGINX..."
+    echo "============================================="
+    echo
+
+    if [[ -f ${ROOT_DIR}/nginx/ssl/nginx-selfsigned.crt ]]
+    then
+        echo "Certificate is already present"
+    else
+        echo "Creating a certificate for HTTPS support (valid for 365 days)"
+        mkdir -p ${ROOT_DIR}/nginx/ssl || error "Failed to create https certificates directory"
+        openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${ROOT_DIR}/nginx/ssl/nginx-selfsigned.key -out ${ROOT_DIR}/nginx/ssl/nginx-selfsigned.crt || error "Failed to create certificates"
+    fi
+
+    if [[ -f ${ROOT_DIR}/nginx/ssl/ssl-params.conf ]]
+    then
+        echo "Strong Diffie-Hellman group is already present"
+    else
+        echo "Creating a 4096 bits Diffie-Hellman group, which is used for https negotiation with clients." 
+        mkdir -p ${ROOT_DIR}/nginx/ssl || error "Failed to create https certificates directory"
+        openssl dhparam -out ${ROOT_DIR}/nginx/ssl/dhparam.pem 4096 || error "Failed to create Diffie-Hellman group"
+    fi
+
+    echo
+}
+
 function create_certificates
 {
     echo "Creating certificates..."
@@ -194,6 +221,9 @@ case ${ACTION} in
 
     # update the repos if they exits othewise clone them
     prepare_repos
+
+    # generate self-signed certificate for NGINX
+    create_nginx_https_certificate
 
     create_certificates
 
