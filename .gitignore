@@ -1,1 +1,5 @@
 git
+nginx/ssl/adc-broker-nginx-certificate.pem
+nginx/ssl/adc-broker-nginx-key.pem
+nginx/ssl/adc-broker-nginx.csr
+nginx/ssl/dhparam.pem
