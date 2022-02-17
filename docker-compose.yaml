@@ -11,6 +11,8 @@ services:
       - STATIC_FILES_DIRS=/static/
     volumes:
       - static_files:/static/
+    networks:
+      - adc-backend
     
   db:
     image: postgres:14.1-alpine
@@ -21,7 +23,9 @@ services:
       - POSTGRES_PASSWORD=postgres
     ports:
       - "5432:5432"
-
+    networks:
+      - adc-backend
+      
   broker:
     image: artemis_broker
     container_name: broker
@@ -36,6 +40,8 @@ services:
     environment:
       - AMQ_USER=admin
       - AMQ_PASSWORD=admin
+    networks:
+      - adc-backend
 
   web:
     image: adc_back
@@ -60,6 +66,8 @@ services:
       - frontend
       - db
       - broker
+    networks:
+      - adc-backend
 
   nginx:
     image: nginx:stable-alpine
@@ -74,6 +82,12 @@ services:
       - ./nginx/ssl:/etc/nginx/ssl
     depends_on:
       - web
+    networks:
+      - adc-backend
+      
+networks:
+  adc-backend:
+    driver: bridge
 
 volumes:
   static_files:
