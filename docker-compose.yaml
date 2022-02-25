@@ -6,7 +6,7 @@ services:
     build:
       context: git/adc-broker-frontend/
       dockerfile: Dockerfile
-    container_name: angular_build
+    container_name: angular-build
     environment:
       - STATIC_FILES_DIRS=/static/
     volumes:
@@ -48,7 +48,7 @@ services:
     build:
       context: git/adc-broker-backend/
       dockerfile: Dockerfile
-    container_name: adc_back
+    container_name: adc-back
     command: gunicorn adc_backend.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - static_files:/static
