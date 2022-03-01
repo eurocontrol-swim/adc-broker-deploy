@@ -123,7 +123,7 @@ function stop_services
 }
 
 function build
-{
+{   
     echo "Removing old data..."
     echo "===================="
     echo
@@ -159,7 +159,7 @@ function create_nginx_https_certificate
         echo "Creating a certificate for HTTPS support (valid for 365 days)"
         mkdir -p ${ROOT_DIR}/nginx/ssl || error "Failed to create https certificates directory"
         openssl ecparam -genkey -name secp384r1 -out ${ROOT_DIR}/nginx/ssl/adc-broker-nginx-key.pem
-        openssl req -new -sha256 -key ${ROOT_DIR}/nginx/ssl/adc-broker-nginx-key.pem -out ${ROOT_DIR}/nginx/ssl/adc-broker-nginx.csr -subj /CN=localhost.localdomain
+        openssl req -new -sha256 -key ${ROOT_DIR}/nginx/ssl/adc-broker-nginx-key.pem -out ${ROOT_DIR}/nginx/ssl/adc-broker-nginx.csr -subj /CN=adc-frontend #-config adc-frontend-openssl.conf
         openssl req -x509 -sha256 -days 365 -key ${ROOT_DIR}/nginx/ssl/adc-broker-nginx-key.pem -in ${ROOT_DIR}/nginx/ssl/adc-broker-nginx.csr -out ${ROOT_DIR}/nginx/ssl/adc-broker-nginx-certificate.pem
         openssl req -in ${ROOT_DIR}/nginx/ssl/adc-broker-nginx.csr -text -noout | grep -i "Signature.*SHA256" && echo "All is well"
     fi
