@@ -9,6 +9,11 @@ Run `./adc_broker.sh start` (a `--detached` option is available).
 Wait for the angular build to be finished.
 The application is now operational.
 
+## Certificates
+To regenerate all nginx certificates. First, you must delete them.
+Run `rm nginx/ssl/adc-broker-nginx-key*`
+They are recreated during the build.
+
 ### Website
 The website is accessible at the address http://localhost (for the moment it is not accessible outside the VM).
 An administrator admin@mail.com is created by default with the default password admin (it need to be changed).
