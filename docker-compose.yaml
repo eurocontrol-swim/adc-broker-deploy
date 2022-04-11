@@ -73,8 +73,8 @@ services:
     image: nginx:stable-alpine
     container_name: adc-frontend
     ports:
-      - '80:80'
-      - '443:443'
+      - '80:9080'
+      - '443:9443'
     restart: unless-stopped
     volumes:
       - static_files:/home/app/web/staticfiles
